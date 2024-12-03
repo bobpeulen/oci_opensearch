@@ -76,9 +76,21 @@ kafka-pipeline:
 
 # Example JSON message for OCI Streaming
 
+- See https://github.com/graytaylor0/Fake-Apache-Log-Generator
+
 {"timestamp": "2024-12-03T09:45:00.000Z", "name":"John", "age":30, "car":"Volvo"}
 {"timestamp": "2024-12-03T09:46:00.000Z","name":"Bob", "age":31, "car":"Ford"}
 
+
+{"idx": 235, "carbrand": "Volvo", "message_timestamp": Dec 3, 2024 @ 15:13:58.515, "error_code": 99}
+
+idx 582 carbrand Ford message_timestamp Dec 3, 2024 @ 15:14:58.515 error_code 99
+idx 36 carbrand Volvo message_timestamp Dec 3, 2024 @ 15:15:58.515 error_code 99
+idx 87 carbrand Mercedes message_timestamp Dec 3, 2024 @ 15:16:58.515 error_code 22
+idx 965 carbrand Ford message_timestamp Dec 3, 2024 @ 15:17:58.515 error_code 2
+idx 36 carbrand Volvo message_timestamp Dec 3, 2024 @ 15:18:58.515 error_code 99
+idx 87 carbrand Mercedes message_timestamp Dec 3, 2024 @ 15:19:58.515 error_code 22
+idx 965 carbrand Ford message_timestamp Dec 3, 2024 @ 15:20:58.515 error_code 99
 
 
 
