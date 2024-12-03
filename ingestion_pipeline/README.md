@@ -74,7 +74,10 @@ kafka-pipeline:
 ```
 
 
+# Example JSON message for OCI Streaming
 
+{"timestamp": "2024-12-03T09:45:00.000Z", "name":"John", "age":30, "car":"Volvo"}
+{"timestamp": "2024-12-03T09:46:00.000Z","name":"Bob", "age":31, "car":"Ford"}
 
 
 
