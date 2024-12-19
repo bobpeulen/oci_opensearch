@@ -24,10 +24,10 @@
 
 ## Access both dashboards
 
-- Copy private key to jumphost
+- Copy private key to jumphost, from local machine
   
   ```
-  scp -i ~/.ssh/private_key.pem "~/.ssh/private_key.pem" opc@[PUBLIC_ENDPOINT]:/home/opc
+  scp -i ~/.ssh/private_key.pem "C:/Users/Bob/.ssh/private_key.pem" opc@[PUBLIC_ENDPOINT]:/home/opc
   ```
 
 - Enable port forwarding for both instances
