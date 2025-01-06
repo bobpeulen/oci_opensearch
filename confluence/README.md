@@ -1,3 +1,4 @@
-# Confluence Batch into OCI OpenSearch
+# Confluence Trigger to Automate Vectorizing
 
-Batch processing every hour changes made to specific Confluence pages, reviewing the changes, vectorizing, and storing vectors in OCI OpenSearch.
+- Confluence will trigger when a page has been edited, a HTTP request will be send to API Gateway/OCI Functions
+- OCI Functions will either write to OCI Streaming/Data Prepper/OCI OCI OpenSearch or directly apply logic
