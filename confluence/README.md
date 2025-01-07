@@ -18,4 +18,9 @@
   cd confluencex
   ```
 
+  - Invoke
+    ```
+    fn invoke app_bp confluencex
+    ```
+
 - Change func.py
