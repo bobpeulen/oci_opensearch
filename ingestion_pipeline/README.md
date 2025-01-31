@@ -35,6 +35,39 @@ my-first-pipeline:
 
 ```
 
+## Example using compressed csv
+
+```
+log-pipeline:
+  source:
+    oci-object:
+      acknowledgments: true
+      codec:
+        csv:
+      compression: gzip
+      scan:
+        start_time: 2023-01-01T00:00:00Z
+        end_time: 2024-01-01T00:00:00Z
+        buckets:
+          - bucket:
+              namespace: "idee4xpu3dvm"
+              name: "data-prepper-test-dnd"
+              region: "us-ashburn-1"
+          - bucket:
+              namespace: "idee4xpu3dvm"
+              name: "data-prepper-test-dnd"
+              region: "us-phoenix-1"
+    - grok:
+        match:
+          log: [ "%{COMMONAPACHELOG}" ]
+  sink:
+    - opensearch:
+        hosts: [ "ocid1.opensearchcluster.oc1.iad.amaaaaaa2da6iyaacehx5go7jepe6ivq623p3dtnsvlywctrjzd3dbug4dra" ]
+        insecure: false
+        username: ${{oci_secrets:opensearch-username}}
+        password: ${{oci_secrets:opensearch-password}}
+        index: apache_logs
+```
 
 ## **OCI Streaming**
 
