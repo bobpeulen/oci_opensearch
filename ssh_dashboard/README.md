@@ -34,6 +34,11 @@
   ssh -C -v -t -L 127.0.0.1:5601:10.0.1.214:5601 -L 127.0.0.1:9200:10.0.1.20:9200 opc@129.213.47.148 -i C:/Users/Bob/.ssh/private_key.pem
   ```
 
+  Port forwarding example
+  ```
+   ssh -L 8080:localhost:80 opc@132.145.159.64 -i C:/Users/Bob/.ssh/private_key.pem
+  ```
+
 - Access at
   ```
   https://localhost:5601
