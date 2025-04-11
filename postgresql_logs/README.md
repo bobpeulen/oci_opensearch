@@ -85,10 +85,12 @@ postgresql-logs-pipeline:
     oci-object:
       acknowledgments: true
       codec:
-        csv: null 
+        csv: null
+        detect_header: false
       compression: gzip
       scan:
-        start_time: 2024-11-18T08:01:59.363Z
+        scheduling:
+          interval: PT40S
         buckets:
           - bucket:
               namespace: fro8fl9kuqli
