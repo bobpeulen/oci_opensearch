@@ -88,7 +88,6 @@ postgresql-logs-pipeline:
       acknowledgments: true
       codec:
         csv: null
-        detect_header: false
       compression: gzip
       scan:
         scheduling:
