@@ -61,16 +61,23 @@ Enable export of logging from OCI PostgreSQL in Object Storage. See [documentati
 
 ## 4. Set up Ingestion Pipeline
 
- - Source Coordination
+- Open your OCI OpenSearch cluster and create a new pipeline. Give it a name. Add the below YAML. Change the:
+  - Region
+  - Bucket names
+  - Namespace
+  - Your OCI PostgreSQL OCID and ID (under the prefix, in the filter)
+  - Your Vault OCIDs for your username and password for OCI OpenSearch
+
+ - **Source Coordination YAML**
 ```
 source_coordination:
   store:
     oci-object-bucket:
-      name: oci_opensearch_pipeline_source_coordination
-      namespace: fro8fl9kuqli
+      name: "oci_opensearch_pipeline_source_coordination"
+      namespace: "fro8fl9kuqli"
 ```
 
-- Pipeline YAML
+- **Pipeline YAML**
 ```
 version: 2
 pipeline_configurations:
@@ -109,3 +116,6 @@ postgresql-logs-pipeline:
         index: "postgresql_logs_v1"
  
 ```
+- When done, click on "Dry run" to test the YAML files.
+  ![image](images/img_2.png)
+
