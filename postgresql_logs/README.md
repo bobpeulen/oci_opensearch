@@ -76,10 +76,12 @@ version: 2
 pipeline_configurations:
   oci:
     secrets:
-      opensearch-username: 
-        secret_id: ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda
+      opensearch-username:
+        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda"
       opensearch-password:
-        secret_id: ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq
+        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+
+
 postgresql-logs-pipeline:
   source:
     oci-object:
@@ -100,9 +102,9 @@ postgresql-logs-pipeline:
 
   sink:
     - opensearch:
-        hosts: [ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa]
+        hosts: ["ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa"]
         username: ${{oci_secrets:opensearch-username}}
         password: ${{oci_secrets:opensearch-password}}
         insecure: false
-        index: postgresql_logs_v1
+        index: "postgresql_logs_v1"
 ```
