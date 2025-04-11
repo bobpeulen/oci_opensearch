@@ -13,3 +13,6 @@
 - Add the config file (API Key) and private key to this notebook in the .oci directory
 - Install any of the latest pre-defined conda environments with latest version of OCI
 - Create an object storage bucket
+
+  
+![image](images/img_1.jpg)
