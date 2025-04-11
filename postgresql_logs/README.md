@@ -12,6 +12,7 @@ Enable export of logging from OCI PostgreSQL in Object Storage. See [documentati
   - oci.log_destination_os_namespace: The Object Storage namespace for the tenancy
   - oci.log_destination_os_bucket_name: The Object Storage bucket name to which the logs are exported
 
+![image](images/img_1.png)
 
 
 
