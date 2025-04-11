@@ -14,5 +14,4 @@
 - Install any of the latest pre-defined conda environments with latest version of OCI
 - Create an object storage bucket
 
-  
-![image](images/img_1.jpg)
+
