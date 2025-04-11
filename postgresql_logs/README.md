@@ -119,3 +119,41 @@ postgresql-logs-pipeline:
 - When done, click on "Dry run" to test the YAML files.
   ![image](images/img_2.png)
 
+
+test with unzipped csv.
+```
+version: 2
+pipeline_configurations:
+  oci:
+    secrets:
+      opensearch-username:
+        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda"
+      opensearch-password:
+        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+
+
+postgresql-logs-pipeline:
+  source:
+    oci-object:
+      acknowledgments: true
+      codec:
+        csv: null
+      compression: "none"
+      scan:
+        scheduling:
+          interval: PT60S
+        buckets:
+          - bucket:
+              namespace: "fro8fl9kuqli"
+              name: "oci_postgresql_logs_bp"
+              region: "us-ashburn-1"
+
+  sink:
+    - opensearch:
+        hosts: ["ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa"]
+        username: ${{oci_secrets:opensearch-username}}
+        password: ${{oci_secrets:opensearch-password}}
+        insecure: false
+        index: "postgresql_logs_v1" 
+```
+
