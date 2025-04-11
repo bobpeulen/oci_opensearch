@@ -91,11 +91,12 @@ postgresql-logs-pipeline:
       compression: gzip
       scan:
         scheduling:
-          interval: PT40S
+          interval: PT60S
         buckets:
           - bucket:
-              namespace: fro8fl9kuqli
-              name: oci_postgresql_logs_bp
+              namespace: "fro8fl9kuqli"
+              name: "oci_postgresql_logs_bp"
+              region: "us-ashburn-1"
               filter:
                  include_prefix: ["ocid1.postgresqldbsystem.oc1.iad.amaaaaaaeicj2tiaxceslki45vuy2edmkq3iz7lghph22cbnxmay7xgrxy5q/2855037a-01ee-4003-b493-adc0a0ef526f"]
 
@@ -106,4 +107,5 @@ postgresql-logs-pipeline:
         password: ${{oci_secrets:opensearch-password}}
         insecure: false
         index: "postgresql_logs_v1"
+ 
 ```
