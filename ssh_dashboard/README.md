@@ -17,24 +17,10 @@
   curl -u '[username]:[password]' [full API endpoint, including https:// and port]
   ```
 
-- From local machine, copy private key to Instance. Change the public IP.
-  ```
-  scp -i ~/.ssh/private_key.pem "C:/Users/Bob/.ssh/private_key.pem" opc@129.213.47.148:/home/opc
-  scp -i ~/.ssh/private_key.pem "~/.ssh/private_key.pem" opc@129.213.47.148:/home/opc/.ssh
-  
-  ```
 
-- Enable port forwarding. Change the private IP of the OCI OpenSearch cluster and the public IP of the instance
-  ```
-  ssh -C -v -t -L 127.0.0.1:5601:10.0.1.214:5601 opc@129.213.47.148 -i ~/.ssh/private_key.pem
-  ssh -C -v -t -L 127.0.0.1:5601:10.0.1.214:5601 opc@129.213.47.148 -i C:/Users/Bob/.ssh/private_key.pem
-
-  129.213.47.148
-
-  ssh -C -v -t -L 127.0.0.1:5601:10.0.1.214:5601 -L 127.0.0.1:9200:10.0.1.20:9200 opc@129.213.47.148 -i C:/Users/Bob/.ssh/private_key.pem
-  ```
-
-  Port good example
+  Port example. Change in the below:
+  - Private IP of Dashboard
+  - Public URL jump host
   ```
    ssh -C -v -t -L 127.0.0.1:5601:10.0.0.96:5601 opc@129.213.47.148 -i C:/Users/Bob/.ssh/private_key.pem 
   ```
