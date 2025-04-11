@@ -59,5 +59,45 @@ Enable export of logging from OCI PostgreSQL in Object Storage. See [documentati
   ```
 - Export the latest updated log file from the bucket, unzip, and review the csv file.
 
+## 4. Set up Ingestion Pipeline
 
+ - Source Coordination
+```
+source_coordination:
+  store:
+    oci-object-bucket:
+      name: oci_opensearch_pipeline_source_coordination
+      namespace: fro8fl9kuqli
+```
 
+- Pipeline YAML
+```
+version: 2
+pipeline_configurations:
+  oci:
+    secrets:
+      opensearch-username: 
+        secret_id: ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda
+      opensearch-password:
+        secret_id: ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq
+postgresql-logs-pipeline:
+  source:
+    oci-object:
+      acknowledgments: true
+      codec:
+        csv: null 
+      compression: gzip
+      scan:
+        start_time: 2024-11-18T08:01:59.363Z
+        buckets:
+          - bucket:
+              namespace: fro8fl9kuqli
+              name: oci_postgresql_logs_bp
+  sink:
+    - opensearch:
+        hosts: [ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa]
+        username: ${{oci_secrets:opensearch-username}}
+        password: ${{oci_secrets:opensearch-password}}
+        insecure: false
+        index: postgresql_logs_v1
+```
