@@ -15,6 +15,8 @@ Enable export of logging from OCI PostgreSQL in Object Storage. See [documentati
   When the OCI PostgreSQL instance is active, you should see already logs added to your bucket for your specific OCI PostgreSQL instance OCID.
   ![image](images/img_1.png)
 
+  Logs in the bucket are extracted from OCI PostgreSQL and updated every 1 minute.
+
 ## 3. Test the logging output
 - Log in to your OCI PostgreSQL instance
 - Execute an example statement.
