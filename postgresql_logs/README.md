@@ -93,6 +93,9 @@ postgresql-logs-pipeline:
           - bucket:
               namespace: fro8fl9kuqli
               name: oci_postgresql_logs_bp
+              filter:
+                 include_prefix: ["ocid1.postgresqldbsystem.oc1.iad.amaaaaaaeicj2tiaxceslki45vuy2edmkq3iz7lghph22cbnxmay7xgrxy5q/2855037a-01ee-4003-b493-adc0a0ef526f"]
+
   sink:
     - opensearch:
         hosts: [ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa]
