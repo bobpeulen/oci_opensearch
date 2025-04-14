@@ -84,9 +84,9 @@ pipeline_configurations:
   oci:
     secrets:
       opensearch-username:
-        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda"
+        secret_id: "ocid1.vaultsecret.oc1.iad."
       opensearch-password:
-        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+        secret_id: "ocid1.vaultsecret.oc1.iad."
 
 
 postgresql-logs-pipeline:
@@ -127,9 +127,9 @@ pipeline_configurations:
   oci:
     secrets:
       opensearch-username:
-        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda"
+        secret_id: "ocid1.vaultsecret.oc1.iad."
       opensearch-password:
-        secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+        secret_id: "ocid1.vaultsecret.oc1.iad."
 
 
 postgresql-logs-pipeline:
