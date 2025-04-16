@@ -100,7 +100,7 @@ The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > C
     
       sink:
         - opensearch:
-            hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tiaarjsvsbdddguxnnplg2qimrwb3ms4v6iki63dxthe5fq"]
+            hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tia744ey3m53jfvzmc3heetuytnsb4fxgcz6ikyhgsmjpza"]
             username: ${{oci_secrets:opensearch-username}}
             password: ${{oci_secrets:opensearch-password}}
             insecure: false
