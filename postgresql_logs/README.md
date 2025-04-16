@@ -1,21 +1,116 @@
 
 # Ingest OCI PostgreSQL logs into OCI OpenSearch for database monitoring
 
-## 1. Enable logging
-Enable export of logging from OCI PostgreSQL in Object Storage. See [documentation](https://docs.oracle.com/en-us/iaas/Content/postgresql/export-logs-to-object-storage.htm).
+# Example 1.
 
-## 2. Create OCI ostgreSQL database and OCI OpenSearch cluster
+## Use OCI Logging and OCI Streaming to stream any logs into OCI OpenSearch, using pipelines.
+
+The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch Pipelines > OCI OpenSearch
+
+## 1. Create an OCI postgreSQL database and OCI OpenSearch cluster
 - Set up default VCN with private and public subnet, add ports for OCI OpenSearch and OCI PostgreSQL
 - Create OCI OpenSearch cluster in public subnet
-- Create OCI PostgreSQL database, add a custom configuration with (See [documentation](https://docs.oracle.com/en-us/iaas/Content/postgresql/export-logs-to-object-storage.htm)).
-  - oci.log_destination: oci_object_storage
-  - oci.log_destination_os_namespace: The Object Storage namespace for the tenancy
-  - oci.log_destination_os_bucket_name: The Object Storage bucket name to which the logs are exported
 
-  When the OCI PostgreSQL instance is active, you should see already logs added to your bucket for your specific OCI PostgreSQL instance OCID.
-  ![image](images/img_1.png)
+## 2. Create logging for OCI PostgreSQL
+- Create an OCI Log Group
+- Follow the steps here to enable OCI Logging for OCI PostgreSQL. [link to documentation](https://docs.oracle.com/en-us/iaas/Content/postgresql/logging-service-logs.htm#logging)
+- Use the below as example for CLI to enable logging.
 
-  Logs in the bucket are extracted from OCI PostgreSQL and updated every 1 minute.
+  ```
+  oci logging log create --display-name "postgres_logging" --log-group-id [YOUR_LOG_GROUP_OCID] --log-type SERVICE --is-enabled true --configuration '{"compartmentId":"[YOUR_COMPARTMENT_OCID]","source":{"resource":"[YOUR_OCI_POSTGRESQL_INSTANCE_OCID","service":"postgresql","sourceType":"OCISERVICE","category":"postgresql_database_logs"}}'
+  ```
+
+## 3. Create an OCI Stream and Connector Hub
+- Go to OCI Streaming and create a Stream
+- Go to Connector Hub and select OCI Logging as source, with your Log group and specific Log name to which the OCI PostgreSQL logs are pushed
+- Select your just created Stream as target. After creating the connector, go to your Stream. When logs are sent in the last minute, you can see a message like the below.
+
+  ```
+  {'data': {'application_name': 'postgresql',
+    'backend_type': 'postmaster',
+    'command_tag': '',
+    'conString': '',
+    'connection_from': '',
+    'database_name': '',
+    'detail': '',
+    'hint': '',
+    'internal_query': '',
+    'internal_query_pos': '',
+    'leader_pid': '',
+    'level': 'LOG',
+    'location': '',
+    'msg': 'received fast shutdown request',
+    'process_id': '18',
+    'query': '',
+    'query_id': '0',
+    'query_pos': '',
+    'session_id': '67fe430e.12',
+    'session_line_num': '11',
+    'session_start_time': '2025-04-15 11:29:18 UTC',
+    'sql_state_code': '00000',
+    'transaction_id': '0',
+    'user_name': '',
+    'virtual_transaction_id': ''},
+   'id': 'e7f25bcf-5fa9-4c73-9a71-',
+   'oracle': {'compartmentid': 'ocid1.compartment.oc1..',
+    'ingestedtime': '2025-04-15T11:58:29.386Z',
+    'loggroupid': 'ocid1.loggroup.oc1.eu-frankfurt-1.',
+    'logid': 'ocid1.log.oc1.eu-frankfurt-1.',
+    'tenantid': 'ocid1.tenancy.oc1..'},
+   'source': 'ocid1.postgresqldbsystem.oc1.eu-frankfurt-1.',
+   'specversion': '1.0',
+   'subject': '146ec356-89ed-4084-baba-',
+   'time': '2025-04-15T11:58:25.354Z',
+   'type': 'com.oraclecloud.postgresql.postgresqlDbSystem.postgresql_database_logs'}
+   ```
+
+## 4. In OCI OpenSearch, create a Pipeline
+- First, in OCI Vault, create a secret for your OCI OpenSearch username and password
+- Go to OCI OpenSearch, click on Pipeline. Use the below YAML and change:
+  - Your Secret OCIDS for username and password
+  - Your OCI Streaming bootstrap server
+  - Your topic name and group_id
+  - Your stream pool id (OCID)
+  - Your OCI OpenSearch cluster OCID
+
+  ```
+  version: 2
+  pipeline_configurations:
+    oci:
+      secrets:
+        opensearch-username:
+          secret_id: "ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaeicj2tia3i4o2bn2s6anp3og4wceyyoo7bllvjjrhh2fro5xkdva"
+        opensearch-password:
+          secret_id: "ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaeicj2tiaji77odioulqprczn52jvq445765ljdwp7egwl5zns43q"
+  kafka-pipeline:
+    source:
+      kafka:
+        bootstrap_servers:
+          - "https://cell-1.streaming.eu-frankfurt-1.oci.oraclecloud.com:9092"
+        topics:
+          - name: "OpenSourceData_stream_1"
+            group_id: "OpenSourceData_stream_pool_1"
+        acknowledgments: true
+        encryption:
+          type: ssl
+          insecure: false
+        authentication:
+          sasl:
+            oci:
+              stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiacazj6xzvn7rkfdyci6w2io6erapt7ctpxtqxauvocmea"
+  
+    sink:
+      - opensearch:
+          hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tiabwfk6ro2avxjxjhji5ud4x7snjm4t7jouxu6jzul6rcq"]
+          username: ${{oci_secrets:opensearch-username}}
+          password: ${{oci_secrets:opensearch-password}}
+          insecure: false
+          index: "pipeline_streaming_index"
+  
+  ```
+
+
+
 
 ## 3. Test the logging output
 - Log in to your OCI PostgreSQL instance
@@ -158,12 +253,3 @@ postgresql-logs-pipeline:
 ```
 
 
-
-# Example 2.
-
-Use OCI Logging and OCI Streaming to stream any logs into OCI OpenSearch, using pipelines.
-
-- OCI PostgreSQL > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch
-  ```
-  oci logging log create --display-name "postgres_test" --log-group-id ocid1.loggroup.oc1.eu-frankfurt-1.amaaaaaaeicj2tiastwtu4ymhhgt2dfoz24auuknfeigkxe3g2i6xvkb2dzq --log-type SERVICE --is-enabled true --configuration '{"compartmentId":"ocid1.compartment.oc1..aaaaaaaaegj4aqihbklk2xaxlqcvd2tsbb2colz3xhol4glhye2hnbmhcgfa","source":{"resource":"ocid1.postgresqldbsystem.oc1.eu-frankfurt-1.amaaaaaaeicj2tiad2e6zfymp7qv3prwtvs3t4wwctnl6dq5crqmpn3ypwga","service":"postgresql","sourceType":"OCISERVICE","category":"postgresql_database_logs"}}'
-  ```
