@@ -73,41 +73,42 @@ The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > C
   - Your stream pool id (OCID)
   - Your OCI OpenSearch cluster OCID
 
-  ```
-  version: 2
-  pipeline_configurations:
-    oci:
-      secrets:
-        opensearch-username:
-          secret_id: "ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaeicj2tia3i4o2bn2s6anp3og4wceyyoo7bllvjjrhh2fro5xkdva"
-        opensearch-password:
-          secret_id: "ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaeicj2tiaji77odioulqprczn52jvq445765ljdwp7egwl5zns43q"
-  kafka-pipeline:
-    source:
-      kafka:
-        bootstrap_servers:
-          - "https://cell-1.streaming.eu-frankfurt-1.oci.oraclecloud.com:9092"
-        topics:
-          - name: "OpenSourceData_stream_1"
-            group_id: "OpenSourceData_stream_pool_1"
-        acknowledgments: true
-        encryption:
-          type: ssl
-          insecure: false
-        authentication:
-          sasl:
-            oci:
-              stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiacazj6xzvn7rkfdyci6w2io6erapt7ctpxtqxauvocmea"
-  
-    sink:
-      - opensearch:
-          hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tiabwfk6ro2avxjxjhji5ud4x7snjm4t7jouxu6jzul6rcq"]
-          username: ${{oci_secrets:opensearch-username}}
-          password: ${{oci_secrets:opensearch-password}}
-          insecure: false
-          index: "pipeline_streaming_index"
-  
-  ```
+
+    ```
+    version: 2
+    pipeline_configurations:
+      oci:
+        secrets:
+          opensearch-username:
+            secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda" 
+          opensearch-password:
+            secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+    kafka-pipeline:
+      source:
+        kafka:
+          bootstrap_servers:
+            - "https://cell-1.streaming.eu-frankfurt-1.oci.oraclecloud.com:9092"
+          topics:
+            - name: "postgres_logs"
+              group_id: "DefaultPool"
+          acknowledgments: true
+          encryption:
+            type: ssl
+            insecure: false
+          authentication:
+            sasl:
+              oci:
+                stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiarw4bnzt7he7ask4ioqfc74cbxwrsaxgpj2mxpri5chyq"
+    
+      sink:
+        - opensearch:
+            hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tiaarjsvsbdddguxnnplg2qimrwb3ms4v6iki63dxthe5fq"]
+            username: ${{oci_secrets:opensearch-username}}
+            password: ${{oci_secrets:opensearch-password}}
+            insecure: false
+            index: "pipeline_logs_streaming_index"
+    
+    ```
 
 
 
