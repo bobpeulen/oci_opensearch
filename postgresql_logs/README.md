@@ -1,8 +1,6 @@
 
 # Ingest OCI PostgreSQL logs into OCI OpenSearch for database monitoring
 
-# Example 1.
-
 ## Use OCI Logging and OCI Streaming to stream any logs into OCI OpenSearch, using pipelines.
 
 The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch Pipelines > OCI OpenSearch
@@ -110,10 +108,10 @@ The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > C
     
     ```
 
+## 5. Open OCI OpenSearch dashboard
 
 
-
-## 3. Test the logging output
+## 6. Test logging
 - Log in to your OCI PostgreSQL instance
 - Execute an example statement.
 
