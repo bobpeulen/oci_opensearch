@@ -161,6 +161,8 @@ postgresql-logs-pipeline:
 
 # Example 2.
 
+Use OCI Logging and OCI Streaming to stream any logs into OCI OpenSearch, using pipelines.
+
 - OCI PostgreSQL > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch
   ```
   oci logging log create --display-name "postgres_test" --log-group-id ocid1.loggroup.oc1.eu-frankfurt-1.amaaaaaaeicj2tiastwtu4ymhhgt2dfoz24auuknfeigkxe3g2i6xvkb2dzq --log-type SERVICE --is-enabled true --configuration '{"compartmentId":"ocid1.compartment.oc1..aaaaaaaaegj4aqihbklk2xaxlqcvd2tsbb2colz3xhol4glhye2hnbmhcgfa","source":{"resource":"ocid1.postgresqldbsystem.oc1.eu-frankfurt-1.amaaaaaaeicj2tiad2e6zfymp7qv3prwtvs3t4wwctnl6dq5crqmpn3ypwga","service":"postgresql","sourceType":"OCISERVICE","category":"postgresql_database_logs"}}'
