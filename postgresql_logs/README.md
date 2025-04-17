@@ -71,6 +71,7 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
   - Your OCI OpenSearch cluster OCID
 
 
+
   ```
   version: 2
   pipeline_configurations:
