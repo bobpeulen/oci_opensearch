@@ -170,9 +170,9 @@ In Discover, open your log and select several fields that are available. An exam
 ## 8. Review your pg_audit settings
 [pg_audit](https://github.com/pgaudit/pgaudit/blob/main/README.md) is used to track activities and generate logs. You can change the settings of what is tracked (and logged) usin pg_audit.
 
-An example, changing the log settings.
-![image](images/img_5.png)
-![image](images/img_6.png)
+- An example, changing the log settings.
+  ![image](images/img_5.png)
+  ![image](images/img_6.png)
 
 
 
