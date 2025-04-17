@@ -71,42 +71,6 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
   - Your OCI OpenSearch cluster OCID
 
 
-    ```
-    version: 2
-    pipeline_configurations:
-      oci:
-        secrets:
-          opensearch-username:
-            secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda" 
-          opensearch-password:
-            secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
-    kafka-pipeline:
-      source:
-        kafka:
-          bootstrap_servers:
-            - "https://cell-1.streaming.eu-frankfurt-1.oci.oraclecloud.com:9092"
-          topics:
-            - name: "postgres_logs"
-              group_id: "DefaultPool"
-          acknowledgments: true
-          encryption:
-            type: ssl
-            insecure: false
-          authentication:
-            sasl:
-              oci:
-                stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiarw4bnzt7he7ask4ioqfc74cbxwrsaxgpj2mxpri5chyq"
-    
-      sink:
-        - opensearch:
-            hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tia744ey3m53jfvzmc3heetuytnsb4fxgcz6ikyhgsmjpza"]
-            username: ${{oci_secrets:opensearch-username}}
-            password: ${{oci_secrets:opensearch-password}}
-            insecure: false
-            index: "pipeline_logs_streaming_index"
-    
-    ```
-
   ```
   version: 2
   pipeline_configurations:
@@ -144,17 +108,15 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
           index: "pipeline_logs_streaming_index2"
   ```
 
-
 ## 5. Open OCI OpenSearch dashboard
 
 - In OCI OpenSearch dashboard, create a new Index Patterns. Use the Index name you provided in the pipeline YAML. In the above example, that is "pipeline_logs_streaming_index".
-- In OCI OpenSearch dashboard, go to Discover. Review the incoming logs - see example in the below image.
+- In OCI OpenSearch dashboard, go to Discover. Review the incoming logs by adding several variables to the report. Make sure the time range is in order. See example in the below image.
 
 ![image](images/img_3.png)
 
 
-
-## 6. Test logging
+## 6. Test logging by executing SQL statements
 - Log in to your OCI PostgreSQL instance
 - Execute an example statement.
 
@@ -194,104 +156,9 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
   
   (12, 'Milk', 2.99);
   ```
-- Export the latest updated log file from the bucket, unzip, and review the csv file.
 
-## 4. Set up Ingestion Pipeline
-
-- Open your OCI OpenSearch cluster and create a new pipeline. Give it a name. Add the below YAML. Change the:
-  - Region
-  - Bucket names
-  - Namespace
-  - Your OCI PostgreSQL OCID and ID (under the prefix, in the filter)
-  - Your Vault OCIDs for your username and password for OCI OpenSearch
-
- - **Source Coordination YAML**
-```
-source_coordination:
-  store:
-    oci-object-bucket:
-      name: "oci_opensearch_pipeline_source_coordination"
-      namespace: "fro8fl9kuqli"
-```
-
-- **Pipeline YAML**
-```
-version: 2
-pipeline_configurations:
-  oci:
-    secrets:
-      opensearch-username:
-        secret_id: "ocid1.vaultsecret.oc1.iad."
-      opensearch-password:
-        secret_id: "ocid1.vaultsecret.oc1.iad."
+## 7. Review the logs in OCI OpenSearch
 
 
-postgresql-logs-pipeline:
-  source:
-    oci-object:
-      acknowledgments: true
-      codec:
-        csv: null
-      compression: gzip
-      scan:
-        scheduling:
-          interval: PT60S
-        buckets:
-          - bucket:
-              namespace: "fro8fl9kuqli"
-              name: "oci_postgresql_logs_bp"
-              region: "us-ashburn-1"
-              filter:
-                 include_prefix: ["ocid1.postgresqldbsystem.oc1.iad.amaaaaaaeicj2tiaxceslki45vuy2edmkq3iz7lghph22cbnxmay7xgrxy5q/2855037a-01ee-4003-b493-adc0a0ef526f"]
-
-  sink:
-    - opensearch:
-        hosts: ["ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa"]
-        username: ${{oci_secrets:opensearch-username}}
-        password: ${{oci_secrets:opensearch-password}}
-        insecure: false
-        index: "postgresql_logs_v1"
- 
-```
-- When done, click on "Dry run" to test the YAML files.
-  ![image](images/img_2.png)
-
-
-test with unzipped csv.
-```
-version: 2
-pipeline_configurations:
-  oci:
-    secrets:
-      opensearch-username:
-        secret_id: "ocid1.vaultsecret.oc1.iad."
-      opensearch-password:
-        secret_id: "ocid1.vaultsecret.oc1.iad."
-
-
-postgresql-logs-pipeline:
-  source:
-    oci-object:
-      acknowledgments: true
-      codec:
-        csv: null
-      compression: "none"
-      scan:
-        scheduling:
-          interval: PT60S
-        buckets:
-          - bucket:
-              namespace: "fro8fl9kuqli"
-              name: "oci_postgresql_logs_bp"
-              region: "us-ashburn-1"
-
-  sink:
-    - opensearch:
-        hosts: ["ocid1.opensearchcluster.oc1.iad.amaaaaaaeicj2tiaxwl72s22qzk7jm7ro6fpz2qmrc7xis2v6knzhejjmewa"]
-        username: ${{oci_secrets:opensearch-username}}
-        password: ${{oci_secrets:opensearch-password}}
-        insecure: false
-        index: "postgresql_logs_v1" 
-```
 
 
