@@ -107,6 +107,44 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
     
     ```
 
+  ```
+  version: 2
+  pipeline_configurations:
+    oci:
+      secrets:
+        opensearch-username:
+          secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda" 
+        opensearch-password:
+          secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+  kafka-pipeline2:
+    source:
+      kafka:
+        bootstrap_servers:
+          - "https://cell-1.streaming.eu-frankfurt-1.oci.oraclecloud.com:9092"
+        topics:
+          - name: "postgres_logs"
+            group_id: "DefaultPool"
+        acknowledgments: true
+        encryption:
+          type: ssl
+          insecure: false
+        authentication:
+          sasl:
+            oci:
+              stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiarw4bnzt7he7ask4ioqfc74cbxwrsaxgpj2mxpri5chyq"
+    processor:
+      - parse_json:
+  
+    sink:
+      - opensearch:
+          hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tia744ey3m53jfvzmc3heetuytnsb4fxgcz6ikyhgsmjpza"]
+          username: ${{oci_secrets:opensearch-username}}
+          password: ${{oci_secrets:opensearch-password}}
+          insecure: false
+          index: "pipeline_logs_streaming_index2"
+  ```
+
+
 ## 5. Open OCI OpenSearch dashboard
 
 - In OCI OpenSearch dashboard, create a new Index Patterns. Use the Index name you provided in the pipeline YAML. In the above example, that is "pipeline_logs_streaming_index".
