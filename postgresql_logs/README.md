@@ -118,7 +118,7 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
 
 ## 6. Test logging by executing SQL statements
 - Log in to your OCI PostgreSQL instance
-- Execute an example statement.
+- Execute an example statement, like below. 
 
   ```
   CREATE TABLE products ( 
@@ -165,6 +165,13 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
 In Discover, open your log and select several fields that are available. An example is show below, in which a SQL statement "create database [db_name]" has been executed and returned an error because the database already exists. 
 
 ![image](images/img_4.png)
+
+## 8. Review your pg_audit settings
+[pg_audit](https://github.com/pgaudit/pgaudit/blob/main/README.md) is used to track activities and generate logs. You can change the settings of what is tracked (and logged) usin pg_audit.
+
+An example, changing the log settings.
+![image](images/img_5.png)
+![image](images/img_6.png)
 
 
 
