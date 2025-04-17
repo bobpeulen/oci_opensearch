@@ -157,7 +157,15 @@ The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI 
   (12, 'Milk', 2.99);
   ```
 
+  ```
+  create database db_new;
+  ```
+  
 ## 7. Review the logs in OCI OpenSearch
+In Discover, open your log and select several fields that are available. An example is show below, in which a SQL statement "create database [db_name]" has been executed and returned an error because the database already exists. 
+
+![image](images/img_4.png)
+
 
 
 
