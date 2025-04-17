@@ -1,13 +1,12 @@
 
 # Ingest OCI PostgreSQL logs into OCI OpenSearch for database monitoring
 
-## Use OCI Logging and OCI Streaming to stream any logs into OCI OpenSearch, using pipelines.
-
-The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch Pipelines > OCI OpenSearch
+The following steps will use OCI Logging and OCI Streaming to stream pg_audit logs coming from OCI PostgreSQL into OCI OpenSearch, using pipelines.
+The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch Pipelines > OCI OpenSearch
 
 ## 1. Create an OCI postgreSQL database and OCI OpenSearch cluster
-- Set up default VCN with private and public subnet, add ports for OCI OpenSearch and OCI PostgreSQL
-- Create OCI OpenSearch cluster in public subnet
+- Set up default VCN with private and public subnet, open ports for OCI OpenSearch and OCI PostgreSQL
+- Create an OCI OpenSearch cluster an OCI PostgreSQL instance
 
 ## 2. Create logging for OCI PostgreSQL
 - Create an OCI Log Group
@@ -65,7 +64,7 @@ The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > C
 ## 4. In OCI OpenSearch, create a Pipeline
 - First, in OCI Vault, create a secret for your OCI OpenSearch username and password
 - Go to OCI OpenSearch, click on Pipeline. Use the below YAML and change:
-  - Your Secret OCIDS for username and password
+  - Your Vault Secret OCIDS for username and password
   - Your OCI Streaming bootstrap server
   - Your topic name and group_id
   - Your stream pool id (OCID)
@@ -109,6 +108,12 @@ The below steps follow the following flow: OCI PostgreSQL logs > OCI Logging > C
     ```
 
 ## 5. Open OCI OpenSearch dashboard
+
+- In OCI OpenSearch dashboard, create a new Index Patterns. Use the Index name you provided in the pipeline YAML. In the above example, that is "pipeline_logs_streaming_index".
+- In OCI OpenSearch dashboard, go to Discover. Review the incoming logs - see example in the below image.
+
+![image](images/img_3.png)
+
 
 
 ## 6. Test logging
