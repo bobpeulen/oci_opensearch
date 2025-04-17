@@ -4,6 +4,8 @@
 The following steps will use OCI Logging and OCI Streaming to stream pg_audit logs coming from OCI PostgreSQL into OCI OpenSearch, using pipelines.
 The below steps follow the following flow: OCI PostgreSQL logs (pg_audit) > OCI Logging > Connector Hub > OCI Streaming > OCI OpenSearch Pipelines > OCI OpenSearch
 
+The method can be used for any service that is pushed to OCI Logging. The logs in OCI Logging will automatically be parsed using the Pipelines in OCI OpenSearch. 
+
 ## 1. Create an OCI postgreSQL database and OCI OpenSearch cluster
 - Set up default VCN with private and public subnet, open ports for OCI OpenSearch and OCI PostgreSQL
 - Create an OCI OpenSearch cluster an OCI PostgreSQL instance
