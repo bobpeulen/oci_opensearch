@@ -123,6 +123,11 @@ The method can be used for any service that is pushed to OCI Logging. The logs i
 - Log in to your OCI PostgreSQL instance
 - Execute an example statement, like below. 
 
+
+  ```
+  create database db_new;
+  ```
+  
   ```
   CREATE TABLE products ( 
 
@@ -160,9 +165,6 @@ The method can be used for any service that is pushed to OCI Logging. The logs i
   (12, 'Milk', 2.99);
   ```
 
-  ```
-  create database db_new;
-  ```
   
 ## 7. Review the logs in OCI OpenSearch
 In Discover, open your log and select several fields that are available. An example is show below, in which a SQL statement "create database [db_name]" has been executed and returned an error because the database already exists. 
