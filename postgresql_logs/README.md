@@ -80,9 +80,9 @@ The method can be used for any service that is pushed to OCI Logging. The logs i
     oci:
       secrets:
         opensearch-username:
-          secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiakvgrvpgni25otepemketb5whptuiigh65d6ehc5rnzda" 
+          secret_id: "ocid1.vaultsecret.oc1.iad." 
         opensearch-password:
-          secret_id: "ocid1.vaultsecret.oc1.iad.amaaaaaaeicj2tiawkcd46idkvgpemzes5p4rmiuivlx53xlcn4y4p6fapfq"
+          secret_id: "ocid1.vaultsecret.oc1.iad."
   kafka-pipeline2:
     source:
       kafka:
@@ -98,13 +98,13 @@ The method can be used for any service that is pushed to OCI Logging. The logs i
         authentication:
           sasl:
             oci:
-              stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1.amaaaaaaeicj2tiarw4bnzt7he7ask4ioqfc74cbxwrsaxgpj2mxpri5chyq"
+              stream_pool_id: "ocid1.streampool.oc1.eu-frankfurt-1."
     processor:
       - parse_json:
   
     sink:
       - opensearch:
-          hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1.amaaaaaaeicj2tia744ey3m53jfvzmc3heetuytnsb4fxgcz6ikyhgsmjpza"]
+          hosts: ["ocid1.opensearchcluster.oc1.eu-frankfurt-1."]
           username: ${{oci_secrets:opensearch-username}}
           password: ${{oci_secrets:opensearch-password}}
           insecure: false
